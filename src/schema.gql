@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type TodoEntity {
+  id: Int!
+  title: String!
+  completed: Boolean!
+}
+
 type Query {
   """Hola mundo mensaje"""
   hello: String!
@@ -12,4 +18,9 @@ type Query {
     """limitador del numero aleatorio"""
     to: Int
   ): Int!
+  todos: [TodoEntity!]!
+  todo(
+    """"""
+    id: Int!
+  ): TodoEntity!
 }
