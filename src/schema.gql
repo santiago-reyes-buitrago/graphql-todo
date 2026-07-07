@@ -24,3 +24,13 @@ type Query {
     id: Int!
   ): TodoEntity!
 }
+
+type Mutation {
+  createTodo(createTodoInput: CreateTodoInput!): TodoEntity!
+}
+
+input CreateTodoInput {
+  """titulo de la tarea"""
+  title: String!
+  completed: Boolean = false
+}
