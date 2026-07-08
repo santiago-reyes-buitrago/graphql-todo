@@ -1,34 +1,36 @@
-import {Args, Int, Query, Resolver,Mutation} from '@nestjs/graphql';
+import {Args, Int, Query, Resolver, Mutation} from '@nestjs/graphql';
 import {TodoEntity} from "./entiities/todo.entity";
 import {TodoService} from "./todo.service";
-import {CreateTodoInput} from "./dto/inputs/create-todo.input";
+import {CreateTodoInput, FilterTodoInput, UpdateTodoInput} from "./dto/inputs";
 
 @Resolver()
 export class TodoResolver {
-  constructor(private readonly todoService: TodoService) {}
-
-  @Query(() => [TodoEntity],{name: 'todos'})
-  findAllTodo(): TodoEntity[] {
-    return this.todoService.findAll();
+  constructor(private readonly todoService: TodoService) {
   }
 
-  @Query(() => TodoEntity,{name: 'todo'})
-  findOneTodo(@Args('id',{
-    type: () => Int,
-    description: '',
-  }) id: number) {
+  @Query(() => [TodoEntity], {name: 'todos'})
+  findAllTodo(@Args() filter: FilterTodoInput): TodoEntity[] {
+    return this.todoService.findAll(filter);
+  }
+
+  @Query(() => TodoEntity, {name: 'todo'})
+  findOneTodo(@Args('id', {type: () => Int, description: '',}) id: number) {
     return this.todoService.findOne(id);
   }
 
-  @Mutation(() => TodoEntity,{name: 'createTodo'})
-  createTodo(
-      @Args('createTodoInput')createTodoInput: CreateTodoInput
-  ) {
+  @Mutation(() => TodoEntity, {name: 'createTodo'})
+  createTodo(@Args('createTodoInput') createTodoInput: CreateTodoInput) {
     console.log(createTodoInput)
-    return null;
+    return this.todoService.create(createTodoInput);
   }
 
-  updateTodo() {
-    return {}
+  @Mutation(() => TodoEntity, {name: 'updateTodo'})
+  updateTodo(@Args('updateTodoInput') updateTodoInput: UpdateTodoInput) {
+    return this.todoService.update(updateTodoInput)
+  }
+
+  @Mutation(() => TodoEntity, {name: 'deleteTodo'})
+  deleteTodo(@Args('id', {type: () => Int, description: '',}) id: number) {
+    return this.todoService.remove(id)
   }
 }

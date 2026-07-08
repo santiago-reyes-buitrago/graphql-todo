@@ -18,7 +18,7 @@ type Query {
     """limitador del numero aleatorio"""
     to: Int
   ): Int!
-  todos: [TodoEntity!]!
+  todos(completed: Boolean): [TodoEntity!]!
   todo(
     """"""
     id: Int!
@@ -27,10 +27,23 @@ type Query {
 
 type Mutation {
   createTodo(createTodoInput: CreateTodoInput!): TodoEntity!
+  updateTodo(updateTodoInput: UpdateTodoInput!): TodoEntity!
+  deleteTodo(
+    """"""
+    id: Int!
+  ): TodoEntity!
 }
 
 input CreateTodoInput {
   """titulo de la tarea"""
   title: String!
+  completed: Boolean = false
+}
+
+input UpdateTodoInput {
+  id: Int!
+
+  """titulo de la tarea"""
+  title: String
   completed: Boolean = false
 }
