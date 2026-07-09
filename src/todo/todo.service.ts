@@ -1,6 +1,6 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import {TodoEntity} from "./entiities/todo.entity";
-import {CreateTodoInput, FilterTodoInput, UpdateTodoInput} from "./dto/inputs";
+import {CreateTodoInput, FilterTodoArgs, UpdateTodoInput} from "./dto";
 
 @Injectable()
 export class TodoService {
@@ -10,7 +10,19 @@ export class TodoService {
     {id: 3, title: 'Piedra del Poder', completed: false},
   ];
 
-  findAll(filters: FilterTodoInput): TodoEntity[] {
+  get totalTodos(){
+    return this.findAll({}).length;
+  }
+
+  get completedTodos(){
+    return this.findAll({completed: true}).length;
+  }
+
+  get pendingTodos() {
+    return this.findAll({completed: false}).length;
+  }
+
+  findAll(filters: FilterTodoArgs): TodoEntity[] {
     const entries = Object.entries(filters).filter(([key, value]) => value !== undefined);
     if (entries.length > 0) {
       return this.todos.filter(todo => {

@@ -8,6 +8,12 @@ type TodoEntity {
   completed: Boolean!
 }
 
+type AggregationsType {
+  total: Int!
+  pending: Int!
+  completed: Int!
+}
+
 type Query {
   """Hola mundo mensaje"""
   hello: String!
@@ -23,6 +29,10 @@ type Query {
     """"""
     id: Int!
   ): TodoEntity!
+  totalTodos: Int!
+  completedTodos: Int!
+  pendingTodos: Int!
+  aggregations: AggregationsType!
 }
 
 type Mutation {
